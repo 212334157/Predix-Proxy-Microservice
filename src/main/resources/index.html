@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Proxy Microservice</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script type="text/javascript">
+	function testFunction(){
+		var user_role_element = document.getElementById('user_role');
+		var user_role = user_role_element.value;
+		$.post("/role/"+user_role, function(data, status){
+			if(status === "success"){
+				document.getElementById('role_set').innerHTML = "Role is set to: " + data;
+			}
+			else{
+				document.getElementById('role_set').innerHTML = "Role failed to be set";
+			}
+	    });
+		user_role_element.value = "";
+		
+	}
+</script>
+</head>
+<body>
+	<h1>Predix Proxy Microservice</h1>
+	Set role: <input type="text" id="user_role"><br>
+	<input type="submit" value="Submit" onclick="testFunction()"><br/>
+	<div id="role_set"><b>Make sure role is set first</b></div>
+	<ul>
+		<li><a href="/template/PDF/1000">Display Template</a></li>
+		<li><a href="/complex-report/PDF/1000">Generate Complex Report</a></li>
+		<li><a href="/sensitive-report">Generate Sensitive Report</a></li>
+	</ul>
+</body>
+</html>
