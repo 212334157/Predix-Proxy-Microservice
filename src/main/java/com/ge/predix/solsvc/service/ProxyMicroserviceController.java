@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProxyMicroserviceController {
 	private Role accessRole;
-	private ReportGenerator proxy;
+	private PredixServiceGenerator proxy;
 
 	@RequestMapping("/")
 	String homePage(){
@@ -34,27 +34,27 @@ public class ProxyMicroserviceController {
 		}
 		return contentBuilder.toString();
 	}
-	
+
 	@RequestMapping("/role/{role}")
 	String setRole(@PathVariable("role")String newRole){
 		accessRole = new Role(newRole);
-		proxy = new ReportGeneratorImplProxy(accessRole);
+		proxy = new PredixServiceImplProxy(accessRole);
 		return newRole;
 	}
-	
-	@RequestMapping("/complex-report/{format}/{entries}")
-	String generateCompReport(@PathVariable("format")String reportFormat,@PathVariable("entries")int reportEntries){
-		return proxy.generateComplexReport(reportFormat, reportEntries) + "<br/><a href='/'>BACK</a> ";
+
+	@RequestMapping("/unrestricted-service/{service}/{data}")
+	String generateCompReport(@PathVariable("service")String serviceReport,@PathVariable("data")int dataEntries){
+		return proxy.generateUnrestrictedService(serviceReport, dataEntries) + "<br/><a href='/'>BACK</a> ";
 	}
 
-	@RequestMapping("/sensitive-report")
+	@RequestMapping("/restricted-service")
 	String generateSensReport(){
-		return proxy.generateSensitiveReport() + "<br/><a href='/'>BACK</a> ";
+		return proxy.generateRestrictedService() + "<br/><a href='/'>BACK</a> ";
 	}
 
-	@RequestMapping("/template/{format}/{entries}")
-	String getReportTemplate(@PathVariable("format")String reportFormat,@PathVariable("entries")int reportEntries){
-		return proxy.displayReportTemplate(reportFormat, reportEntries) + "<br/><a href='/'>BACK</a> ";
+	@RequestMapping("/template/{service}/{data}")
+	String getReportTemplate(@PathVariable("service")String serviceReport,@PathVariable("data")int dataEntries){
+		return proxy.displayServiceTemplate(serviceReport, dataEntries) + "<br/><a href='/'>BACK</a> ";
 	}
-	
+
 }
